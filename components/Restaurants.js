@@ -4,7 +4,6 @@ import {
   StyleSheet,
   ScrollView,
   Image,
-  TouchableOpacity,
   Pressable,
 } from "react-native";
 import React from "react";
@@ -104,13 +103,14 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginEnd: 10,
     backgroundColor: "#FFFFFF",
-    elevation: 2,
-    shadowColor: "#222222",
+    shadowColor: "#000000",
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.17,
+    shadowRadius: 2.54,
+    elevation: 2,
   },
   categoryImage: {
     flex: 5,

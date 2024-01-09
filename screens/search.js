@@ -1,10 +1,29 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { globalStyles } from "../styles/global";
+import { View, StyleSheet, TextInput } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import Colors from "../constants/Colors";
+import { StatusBar } from "expo-status-bar";
 
 const Search = ({ navigation }) => (
   <View style={{ ...styles.container }}>
-    <Text style={globalStyles.headline}>Search page</Text>
+    <StatusBar backgroundColor="#FFFFFF" style="dark"></StatusBar>
+    <View style={{ ...styles.searchSection }}>
+      <Ionicons
+        name="search-outline"
+        size={20}
+        color={Colors.medium}
+        style={{ paddingLeft: 10 }}
+      />
+      <TextInput
+        cursorColor={Colors.green}
+        placeholder="Try pizza, pasta, etc."
+        style={{ ...styles.textInput }}
+        w
+        placeholderTextColor={Colors.medium}
+        onFocus={() => navigation.navigate("search")}
+        autoFocus={true}
+      />
+    </View>
   </View>
 );
 
@@ -13,9 +32,19 @@ export default Search;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: "flex",
-    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
+    padding: 15,
+  },
+  searchSection: {
+    flexDirection: "row",
     alignItems: "center",
-    backgroundColor:"#FFFFFF"
+    backgroundColor: Colors.lightGrey,
+    borderRadius: 4,
+  },
+  textInput: {
+    flex: 1,
+    fontFamily: "Roboto_400Regular",
+    padding: 6,
+    color: "#111111",
   },
 });

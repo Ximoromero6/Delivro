@@ -15,9 +15,11 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import Colors from "../constants/Colors";
+import { StatusBar } from "expo-status-bar";
 
 const ItemBox = () => (
   <>
+    <StatusBar backgroundColor={Colors.lightGrey} style="dark"></StatusBar>
     <View style={{ ...styles.itemContainer }}>
       <TouchableOpacity style={{ ...styles.item }}>
         <Ionicons name="swap-vertical" size={22} color={Colors.medium} />
@@ -51,6 +53,7 @@ const Filter = ({ navigation }) => {
   const [items, setItems] = useState(categories);
   const [selected, setSelected] = useState([]);
   const flexWith = useSharedValue(0);
+  const displayButton = useSharedValue(0);
   const scale = useSharedValue(0);
 
   useEffect(() => {
@@ -60,6 +63,7 @@ const Filter = ({ navigation }) => {
 
     if (hasSelected !== newSelected) {
       flexWith.value = withTiming(newSelected ? 150 : 0);
+      displayButton.value = withTiming(newSelected ? 1 : 0);
       scale.value = withTiming(newSelected ? 1 : 0);
     }
 
@@ -80,6 +84,8 @@ const Filter = ({ navigation }) => {
     return {
       width: flexWith.value,
       opacity: flexWith.value ? 1 : 0,
+      display: displayButton.value == 1 ? "flex" : "none",
+      marginRight: displayButton.value == 1 ? 10 : 0,
     };
   });
 
@@ -130,32 +136,31 @@ const Filter = ({ navigation }) => {
       />
       <View style={{ height: 100 }} />
       <View style={{ ...styles.footer }}>
-        <View style={{ ...styles.btnContainer }}>
-          <Animated.View style={[animatedStyles, styles.buttonOutline]}>
-            <TouchableOpacity
-              onPress={handleClearAll}
-              style={{
-                width: "100%",
-                height: "100%",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Animated.Text style={[animatedText, styles.buttonOutlineText]}>
-                Clear all
-              </Animated.Text>
-            </TouchableOpacity>
-          </Animated.View>
-
+        <Animated.View style={[animatedStyles, styles.buttonOutline]}>
           <TouchableOpacity
-            style={{ ...styles.button, flex: 1, height: 56 }}
-            onPress={() => {
-              navigation.goBack();
+            onPress={handleClearAll}
+            style={{
+              width: "100%",
+              height: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 10,
             }}
           >
-            <Text style={{ ...styles.buttonText }}>Done</Text>
+            <Animated.Text style={[animatedText, styles.buttonOutlineText]}>
+              Clear all
+            </Animated.Text>
           </TouchableOpacity>
-        </View>
+        </Animated.View>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Text style={{ ...styles.buttonText }}>Done</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -166,7 +171,7 @@ export default Filter;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.lightGrey,
+    backgroundColor: "#FFFFFF",
   },
   footer: {
     position: "absolute",
@@ -175,29 +180,36 @@ const styles = StyleSheet.create({
     right: 0,
     height: 100,
     backgroundColor: "#FFFFFF",
-    elevation: 10,
-    shadowColor: "#000",
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.17,
+    shadowRadius: 2.54,
+    elevation: 3,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    padding: 16,
+    gap: 0,
   },
   button: {
     backgroundColor: Colors.primary,
-    padding: 16,
-    marginVertical: 16,
-    marginRight: 16,
     borderRadius: 4,
     alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+    height: 55,
   },
   buttonOutline: {
     borderWidth: 1,
     borderColor: Colors.primary,
     backgroundColor: "#FFFFFF",
     alignItems: "center",
-    height: 56,
+    height: 55,
     borderRadius: 4,
     justifyContent: "center",
-    margin: 16,
-    marginRight: 0,
   },
   buttonOutlineText: {
     color: Colors.primary,
@@ -235,10 +247,5 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 24,
     backgroundColor: "#FFFFFF",
-  },
-  btnContainer: {
-    flexDirection: "row",
-    gap: 12,
-    justifyContent: "center",
   },
 });

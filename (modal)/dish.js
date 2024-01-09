@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
@@ -28,7 +27,7 @@ const Dish = ({ route }) => {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
       <View style={styles.container}>
-        <StatusBar backgroundColor="transparent"></StatusBar>
+        <StatusBar translucent style="dark"></StatusBar>
         <Animated.Image
           source={item.img}
           style={styles.backgroundImage}
@@ -84,6 +83,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 300,
     objectFit: "cover",
+    backgroundColor: Colors.lightGrey,
   },
   title: {
     fontFamily: "Roboto_700Bold",
@@ -115,11 +115,14 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    elevation: 10,
-    shadowColor: "#111",
-    shadowOffset: { width: 0, height: -10 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.17,
+    shadowRadius: 2.54,
+    elevation: 3,
   },
   addToCartButton: {
     backgroundColor: Colors.primary,
@@ -127,6 +130,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.17,
+    shadowRadius: 2.54,
+    elevation: 3,
   },
   addToCartButtonText: {
     fontFamily: "Roboto_700Bold",

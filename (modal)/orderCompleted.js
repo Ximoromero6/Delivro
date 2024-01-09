@@ -1,15 +1,9 @@
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  ToastAndroid,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import Colors from "../constants/Colors";
 import ConfettiCannon from "react-native-confetti-cannon";
 import { useNavigation } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 
 const OrderCompleted = () => {
   const navigationExt = useNavigation();
@@ -24,6 +18,7 @@ const OrderCompleted = () => {
         alignItems: "center",
       }}
     >
+      <StatusBar backgroundColor="#FFFFFF" style="dark"></StatusBar>
       <ConfettiCannon
         count={200}
         origin={{ x: -10, y: 0 }}
@@ -52,7 +47,7 @@ const OrderCompleted = () => {
           textAlign: "center",
         }}
       >
-        We have received your order and now we'll process to completed.
+        We have received your order and now we'll process to complete it.
       </Text>
       <TouchableOpacity
         onPress={() => navigationExt.navigate("home")}
@@ -72,12 +67,20 @@ const styles = StyleSheet.create({
   doneButton: {
     backgroundColor: Colors.primary,
     paddingHorizontal: 16,
-    borderRadius: 6,
+    borderRadius: 4,
     width: "100%",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     height: 50,
     marginTop: 40,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.17,
+    shadowRadius: 2.54,
+    elevation: 3,
   },
 });

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, Pressable } from "react-native";
+import { View, StyleSheet, Text, Pressable, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import useBasketStore from "../../store/basketStore";
@@ -99,10 +99,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     borderRadius: 0,
-    maxHeight: 50,
+    maxHeight: Platform.OS === "ios" ? 80 : 50,
     backgroundColor: "#FFFFFF",
     borderTopWidth: 1,
     borderTopColor: "#EEEEEE",
+    paddingVertical: Platform.OS === "ios" ? 20 : 0,
   },
   mainItemContainer: {
     flex: 1,
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
     width: 18,
     height: 18,
     borderRadius: 50,
-    backgroundColor: "tomato",
+    backgroundColor: "#BC243C",
     position: "absolute",
     top: 10,
     right: 10,

@@ -12,6 +12,7 @@ import Colors from "../constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 
 const Cart = ({ navigation }) => {
   const { products, total, clearCart, addProduct, reduceProduct } =
@@ -38,6 +39,7 @@ const Cart = ({ navigation }) => {
     <View style={styles.container}>
       {!order && total > 0 ? (
         <>
+          <StatusBar backgroundColor="#FFFFFF" style="dark"></StatusBar>
           <FlatList
             data={products}
             contentContainerStyle={{ paddingBottom: 150 }}
@@ -74,7 +76,7 @@ const Cart = ({ navigation }) => {
                 >
                   <TouchableOpacity
                     style={styles.buttonIncreseProduct}
-                    onPress={(e) => reduceProduct(e)}
+                    onPress={(e) => reduceProduct(item)}
                   >
                     <Ionicons name="remove" size={20} color={Colors.medium} />
                   </TouchableOpacity>
@@ -87,7 +89,10 @@ const Cart = ({ navigation }) => {
                   >
                     {item.quantity}
                   </Text>
-                  <TouchableOpacity style={styles.buttonIncreseProduct}>
+                  <TouchableOpacity
+                    style={styles.buttonIncreseProduct}
+                    onPress={(e) => addProduct(item)}
+                  >
                     <Ionicons name="add" size={20} color={Colors.medium} />
                   </TouchableOpacity>
                 </View>
@@ -106,7 +111,7 @@ const Cart = ({ navigation }) => {
                     marginLeft: "auto",
                   }}
                 >
-                  ${item.price * item.quantity}
+                  ${(item.price * item.quantity).toFixed(2)}
                 </Text>
               </View>
             )}
@@ -177,6 +182,7 @@ const Cart = ({ navigation }) => {
             padding: 15,
           }}
         >
+          <StatusBar backgroundColor="#FFFFFF" style="dark"></StatusBar>
           <Image
             source={require("../assets/images/emptyCart.png")}
             style={{ width: 110, height: 110, objectFit: "cover" }}
@@ -227,7 +233,7 @@ const styles = StyleSheet.create({
   },
   orderButton: {
     padding: 16,
-    borderRadius: 6,
+    borderRadius: 4,
     backgroundColor: Colors.primary,
     justifyContent: "center",
     alignItems: "center",
@@ -260,7 +266,7 @@ const styles = StyleSheet.create({
   emptyCartButton: {
     backgroundColor: Colors.primary,
     paddingHorizontal: 16,
-    borderRadius: 6,
+    borderRadius: 4,
     width: "100%",
     flexDirection: "row",
     justifyContent: "center",

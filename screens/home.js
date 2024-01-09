@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { Text, StyleSheet, ScrollView } from "react-native";
 import Categories from "../components/Categories";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Restaurants from "../components/Restaurants";
-import Colors from "../constants/Colors";
 import { StatusBar } from "expo-status-bar";
 
 export default function Home({ navigation }) {
   return (
     <SafeAreaView style={{ ...styles.container }}>
-      <StatusBar backgroundColor="#FFFFFF"></StatusBar>
+      <StatusBar backgroundColor="#FFFFFF" style="dark"></StatusBar>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 140 }}
@@ -21,6 +19,8 @@ export default function Home({ navigation }) {
         </Text>
         <Restaurants />
         <Text style={{ ...styles.headerText }}>Offers near you</Text>
+        <Restaurants />
+        <Text style={{ ...styles.headerText }}>Most favourited places</Text>
         <Restaurants />
       </ScrollView>
     </SafeAreaView>

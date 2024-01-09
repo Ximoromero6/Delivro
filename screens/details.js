@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   Text,
   View,
@@ -22,6 +22,7 @@ import Animated, {
   useSharedValue,
   withTiming,
   useAnimatedRef,
+  FadeIn,
 } from "react-native-reanimated";
 
 import { restaurante } from "../assets/data/restaurant";
@@ -87,18 +88,24 @@ const Details = ({ route }) => {
       activeOpacity={0.5}
       onPress={() => navigation.navigate("Dish", { item: item })}
     >
-      <View style={{ flex: 1 }}>
+      <Animated.View
+        style={{ flex: 1 }}
+        entering={FadeIn.duration(200).delay(100)}
+      >
         <Text style={styles.itemName}>{item.name}</Text>
         <Text style={styles.itemDesc}>{item.info}</Text>
         <Text style={styles.itemPrice}>${item.price}</Text>
-      </View>
-      <Image source={item.img} style={styles.itemImage} />
+      </Animated.View>
+      <Animated.Image
+        source={item.img}
+        style={styles.itemImage}
+        entering={FadeIn.duration(200).delay(100)}
+      />
     </TouchableOpacity>
   );
 
   const selectCategory = (index) => {
     const selected = itemsRef.current[index];
-    console.log(selected);
     setActiveItem(index);
 
     selected.measure((x) => {
@@ -564,7 +571,7 @@ const styles = StyleSheet.create({
   basketButton: {
     backgroundColor: Colors.primary,
     paddingHorizontal: 16,
-    borderRadius: 6,
+    borderRadius: 4,
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",

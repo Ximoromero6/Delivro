@@ -1,23 +1,22 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   Text,
   StyleSheet,
   View,
   TouchableOpacity,
-  SafeAreaView,
-  Platform,
-  NativeModules,
   Image,
   TextInput,
-  KeyboardAvoidingView,
-  Keyboard,
 } from "react-native";
-const { StatusBarManager } = NativeModules;
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import { useNavigation } from "@react-navigation/native";
 
 import BottomSheet from "./BottomSheet";
+import BottomSheetTime from "./BottomSheetTIme";
+
+import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SearchBar = () => {
   const navigation = useNavigation();
@@ -37,6 +36,7 @@ const SearchBar = () => {
             placeholder="Try pizza, pasta, etc."
             style={{ ...styles.textInput }}
             placeholderTextColor={Colors.medium}
+            onFocus={() => navigation.navigate("search")}
           />
         </View>
 
@@ -44,7 +44,7 @@ const SearchBar = () => {
           style={{ ...styles.optionButton }}
           onPress={() => navigation.navigate("Filter")}
         >
-          <Ionicons name="options" size={20} color={Colors.primary} />
+          <Ionicons name="options-outline" size={22} color={Colors.primary} />
         </TouchableOpacity>
       </View>
     </View>
@@ -57,18 +57,37 @@ const Header = () => {
     bottomSheetRef.current?.present();
   };
 
-  const [actualLocation, setActualLocation] = useState("Sydney");
+  const bottomSheetTimeRef = useRef(null);
+  const openModalTime = () => {
+    bottomSheetTimeRef.current?.present();
+  };
+
+  const [actualLocation, setActualLocation] = useState("Selected location");
+
+  const getData = async (item) => {
+    try {
+      const value = await AsyncStorage.getItem(item);
+      if (value !== null) {
+        setActualLocation(value);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      getData("location");
+    }, [])
+  );
 
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        paddingTop: Platform.OS === "android" ? StatusBarManager.HEIGHT : 0,
-      }}
-    >
-      <BottomSheet ref={bottomSheetRef} />
+    <SafeAreaView style={{ flex: 1 }}>
+      <BottomSheet ref={bottomSheetRef} openModalTime={openModalTime} />
+
+      <BottomSheetTime ref={bottomSheetTimeRef} />
 
       <View style={styles.header}>
         <TouchableOpacity style={{ ...styles.bikeButton }} onPress={openModal}>
@@ -170,7 +189,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: Colors.lightGrey,
-    borderRadius: 6,
+    borderRadius: 4,
+  },
+  textInput: {
+    flex: 1,
+    fontFamily: "Roboto_400Regular",
+    padding: 6,
+    color: "#111111",
   },
   optionButton: {
     width: 35,
@@ -178,12 +203,6 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-  },
-  textInput: {
-    flex: 1,
-    fontFamily: "Roboto_400Regular",
-    padding: 5,
-    color: Colors.medium,
   },
   contentContainer: {
     flex: 1,

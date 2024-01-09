@@ -8,10 +8,8 @@ import Cart from "../../screens/cart";
 import Search from "../../screens/search";
 import Profile from "../../screens/profile";
 
-import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
-import Colors from "../../constants/Colors";
 
 const Tab = createBottomTabNavigator();
 

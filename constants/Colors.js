@@ -21,4 +21,5 @@ export default {
   grey: "#e7eaf6",
   medium: "#9ba6a5",
   green: "#225763",
+  black: "#272343",
 };

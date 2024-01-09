@@ -10,11 +10,11 @@ import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import RadioGroup from "react-native-radio-buttons-group";
 
-const BottomSheet = forwardRef((props, ref) => {
+const BottomSheetTime = forwardRef((props, ref) => {
   const navigation = useNavigation();
-  const snapPoints = useMemo(() => ["50%"], []);
+  const snapPoints = useMemo(() => ["40%"], []);
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -28,25 +28,6 @@ const BottomSheet = forwardRef((props, ref) => {
   );
   const { dismiss } = useBottomSheetModal();
 
-  const [actualLocation, setActualLocation] = useState("Current location");
-
-  const getData = async (item) => {
-    try {
-      const value = await AsyncStorage.getItem(item);
-      if (value !== null) {
-        setActualLocation(value);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  useFocusEffect(
-    useCallback(() => {
-      getData("location");
-    }, [])
-  );
-
   return (
     <BottomSheetModal
       handleIndicatorStyle={{ display: "none" }}
@@ -58,44 +39,26 @@ const BottomSheet = forwardRef((props, ref) => {
     >
       <StatusBar translucent style="dark"></StatusBar>
       <View style={styles.contentContainer}>
-        <View style={styles.toggle}>
-          <TouchableOpacity style={styles.toggleActive}>
-            <Text style={styles.activeText}>Delivery</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.toggleInactive}>
-            <Text style={styles.inactiveText}>Pickup</Text>
-          </TouchableOpacity>
-        </View>
-
-        <Text style={styles.subheader}>Your Location</Text>
-
-        <TouchableOpacity
-          onPress={() => {
-            dismiss();
-            navigation.navigate("LocationSeach");
-          }}
-        >
-          <View style={styles.item}>
-            <Ionicons name="location-outline" size={20} color={Colors.medium} />
-            <Text style={{ flex: 1 }}>{actualLocation}</Text>
-            <Ionicons name="chevron-forward" size={24} color={Colors.primary} />
-          </View>
-        </TouchableOpacity>
-
         <Text style={styles.subheader}>Arrival time</Text>
-        <TouchableOpacity
-          onPress={() => {
-            dismiss();
-            props.openModalTime();
-          }}
-        >
+        <TouchableOpacity>
           <View style={styles.item}>
             <Ionicons
               name="stopwatch-outline"
               size={20}
               color={Colors.medium}
             />
-            <Text style={{ flex: 1 }}>Now</Text>
+            <Text style={{ flex: 1 }}>ASAP</Text>
+            <Ionicons name="chevron-forward" size={24} color={Colors.primary} />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <View style={styles.item}>
+            <Ionicons
+              name="stopwatch-outline"
+              size={20}
+              color={Colors.medium}
+            />
+            <Text style={{ flex: 1 }}>Schedule for later</Text>
             <Ionicons name="chevron-forward" size={24} color={Colors.primary} />
           </View>
         </TouchableOpacity>
@@ -111,28 +74,13 @@ const BottomSheet = forwardRef((props, ref) => {
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-  },
-  toggle: {
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 10,
-    marginBottom: 20,
-  },
-  toggleActive: {
-    backgroundColor: Colors.primary,
-    padding: 8,
-    borderRadius: 32,
-    paddingHorizontal: 30,
+    gap: 10
   },
   activeText: {
     color: "#fff",
     fontWeight: "700",
   },
-  toggleInactive: {
-    padding: 8,
-    borderRadius: 32,
-    paddingHorizontal: 30,
-  },
+
   inactiveText: {
     color: Colors.primary,
   },
@@ -149,9 +97,10 @@ const styles = StyleSheet.create({
   },
   subheader: {
     fontSize: 16,
+    marginBottom: 15,
     fontWeight: "600",
-    margin: 16,
     fontFamily: "Roboto_700Bold",
+    margin: 16
   },
   item: {
     flexDirection: "row",
@@ -165,4 +114,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BottomSheet;
+export default BottomSheetTime;
